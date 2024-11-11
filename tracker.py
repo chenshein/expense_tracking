@@ -6,11 +6,12 @@ RED = "\033[31m"
 BLUE = "\033[34m"
 DARK_BLUE = "\033[1;34m"
 RESET = "\033[0m"
+BOLD = "\033[1m"
 
 def main():
     expense_file = "expenses.csv"
     while True:
-        print("\nExpense Tracker Menu: ")
+        print(f"\n{BOLD}Expense Tracker Menu: {RESET}")
         print("1. ➕ Add Expense ")
         print("2. 🔎 View Expenses")
         print("3. 🧾 Get Summary")
@@ -23,10 +24,10 @@ def main():
         elif choice== '3':
             get_summary(expense_file)
         elif choice == '4':
-            print("BYEEEEE")
+            print("Goodbye! 👋")
             break
         else:
-             print(f"{RED}Invalid choice, please try again.{RESET}")
+             print(f"{RED}❌ Invalid choice, please try again.{RESET}")
 
 # load categories from file
 def load_categories():
@@ -36,7 +37,6 @@ def load_categories():
     "Health",
     "Housing",
     "Fun",
-    "Clothing",
     ]
     if os.path.exists('categories.txt'):
         with open('categories.txt', 'r') as file:
@@ -59,7 +59,7 @@ def choose_category():
         if choice.isdigit():
             if 1 <= int(choice) <= len(categories):
                 return categories[int(choice) - 1]
-            print(f"❌ {RED}Invalid number, please choose again!\n{RESET}")
+            print(f"{RED}❌ Invalid number, please choose again!\n{RESET}")
             continue
         else:
             categories.append(choice)
@@ -74,12 +74,11 @@ def validate_date():
             date = datetime.datetime.strptime(date, "%Y-%m-%d")
             return date
         except ValueError:
-            print(f"❌ {RED}Invalid date format. Please use YYYY-MM-DD.{RESET}")
+            print(f"{RED}❌ Invalid date format. Please use YYYY-MM-DD.{RESET}")
             continue
 
 def get_user_expense():
     choosen_category = choose_category()
-    print(choosen_category)
     item_description = input("🎯 Enter item description : ")
     amount = float(input("🎯 Enter item cost (💲): "))
     date = validate_date()
@@ -96,8 +95,11 @@ def view_expense(expense_file):
     print(f"🎯 View User Expense: ")
     with open(expense_file, mode='r', encoding='utf-8') as file:
         lines = file.readlines()
-        for line in lines: 
-            print(line)
+        for line in lines:
+            line = line.strip()  
+            if line:  
+                print(line)
+
 
 def amount_per_category(expenses_list):
     amount_by_category={}
@@ -112,6 +114,7 @@ def amount_per_category(expenses_list):
         print(f"{BLUE}{key}: {RESET}{amount:.2f}$")
 
 
+
 def get_summary(expense_file):
     print("🎯 Summarizing Total User Expense:")
     expenses_list_csv = []  # A list of Object type Expense
@@ -123,7 +126,7 @@ def get_summary(expense_file):
             expenses_list_csv.append(split_line)
         #calculate total amount that spent
         total_spent = sum([expense.amount for expense in expenses_list_csv]) 
-        print(f"{DARK_BLUE}Total amount spent: {RESET}{total_spent} ")
+        print(f"{DARK_BLUE}Total amount spent: {RESET}{float(amount):.2f}$")
         amount_per_category(expenses_list_csv)
 
     

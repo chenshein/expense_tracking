@@ -1,0 +1,6 @@
+Food
+Transportation
+Health
+Housing
+Fun
+Clothing
