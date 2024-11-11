@@ -48,16 +48,33 @@ def choose_category():
             categories.append(choice)
             return choice
 
+
+def validate_date():
+    while True:
+        date = input("Enter date (YYYY-MM-DD): ")
+        try:
+            # Validate date format
+            date = datetime.datetime.strptime(date, "%Y-%m-%d")
+            return date
+        except ValueError:
+            print("Invalid date format. Please use YYYY-MM-DD.")
+            continue
+
 def get_user_expense():
     choosen_category = choose_category()
-    print(choose_category)
-  #  item_description = input("🎯 Enter item description : ")
-   # amount = float(input("🎯 Enter item cost (💲): "))
-
-
+    print(choosen_category)
+    item_description = input("🎯 Enter item description : ")
+    amount = float(input("🎯 Enter item cost (💲): "))
+    date = validate_date()
+    new_expense = Expense(category = choosen_category,description=item_description,amount=amount,date=date)
+    return new_expense
 
 def add_expense(expense_file):
-    get_user_expense()
+    expense = get_user_expense()
+    print(f"🎯 Saving User Expense: {expense} to {expense_file}")
+    with open(expense_file, mode='a', newline='', encoding='utf-8') as file:
+        file.write(f"{expense.category},{expense.description},{expense.amount},{expense.date}\n")    
+
 
 def view_expense():
     pass
